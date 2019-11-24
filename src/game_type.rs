@@ -1,3 +1,5 @@
+use serde_json::value::Value;
+
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct GameObj {
     act_num: i64,
@@ -9,9 +11,9 @@ pub struct GameObj {
     boss: String,
     boss_list: Vec<String>,
     boss_relics: Vec<String>,
-    bottled_lightning: String,
-    bottled_lightning_misc: i64,
-    bottled_lightning_upgrade: i64,
+    bottled_lightning: Option<String>,
+    bottled_lightning_misc: Option<i64>,
+    bottled_lightning_upgrade: Option<i64>,
     card_random_seed_count: i64,
     card_random_seed_randomizer: i64,
     card_seed_count: i64,
@@ -85,7 +87,7 @@ pub struct GameObj {
     name: String,
     neow_bonus: String,
     neow_cost: String,
-    obtained_cards: ObtainedCards,
+    obtained_cards: Value,
     one_time_event_list: Vec<String>,
     overkill: bool,
     path_x: Vec<i64>,
@@ -183,36 +185,4 @@ struct MetricPotionsObtained {
 struct MetricRelicsObtained {
     floor: i64,
     key: String,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
-struct ObtainedCards {
-    #[serde(rename = "Adaptation")]
-    adaptation: i64,
-    #[serde(rename = "DevaForm")]
-    deva_form: i64,
-    #[serde(rename = "EmptyBody")]
-    empty_body: i64,
-    #[serde(rename = "Fasting2")]
-    fasting2: i64,
-    #[serde(rename = "JustLucky")]
-    just_lucky: i64,
-    #[serde(rename = "LikeWater")]
-    like_water: i64,
-    #[serde(rename = "MasterReality")]
-    master_reality: i64,
-    #[serde(rename = "Prostrate")]
-    prostrate: i64,
-    #[serde(rename = "Protect")]
-    protect: i64,
-    #[serde(rename = "Ragnarok")]
-    ragnarok: i64,
-    #[serde(rename = "Tantrum")]
-    tantrum: i64,
-    #[serde(rename = "ThirdEye")]
-    third_eye: i64,
-    #[serde(rename = "Wallop")]
-    wallop: i64,
-    #[serde(rename = "WheelKick")]
-    wheel_kick: i64,
 }
