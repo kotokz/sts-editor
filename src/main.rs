@@ -3,14 +3,43 @@ mod xor;
 
 use anyhow::Result;
 use game_type::GameObj;
+use std::env;
 use std::fs;
 use std::str;
 use xor::Xor;
 
 fn main() -> Result<()> {
-    let mut game_map = decrypt_save("WATCHER.autosave")?;
+    let args: Vec<String> = env::args().collect();
+    let name: String;
+    let source_name: &str = if args.len() < 2 {
+        name = find_savefile().clone();
+        name.as_ref()
+    } else {
+        &args[1]
+    };
 
+    let target_name = if args.len() < 3 {
+        source_name
+    } else {
+        &args[2]
+    };
+
+    println!("Parsing {} to {}", source_name, target_name);
+    let mut game_map = decrypt_save(source_name)?;
+
+    encrypt_save(target_name, basic_edit(&mut game_map)).unwrap();
     Ok(())
+}
+
+fn find_savefile() -> String {
+    let mut filename: &str = "";
+    let mut path: std::path::PathBuf;
+    for entry in glob::glob("**/*.autosave").expect("Failed to read glob pattern") {
+        path = entry.unwrap();
+        filename = path.to_str().unwrap().as_ref();
+    }
+
+    filename.to_owned()
 }
 
 fn basic_edit(game_map: &mut GameObj) -> &GameObj {
