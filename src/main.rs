@@ -1,7 +1,7 @@
 mod game_type;
 mod xor;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use game_type::GameObj;
 use std::env;
 use std::fs;
@@ -12,7 +12,7 @@ fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     let name: String;
     let source_name: &str = if args.len() < 2 {
-        name = find_savefile();
+        name = find_savefile()?;
         name.as_ref()
     } else {
         &args[1]
@@ -31,16 +31,12 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn find_savefile() -> String {
-    let mut filename: &str = "";
-    let path: std::path::PathBuf;
-    for entry in glob::glob("**/*.autosave").expect("Failed to read glob pattern") {
-        path = entry.unwrap();
-        filename = path.to_str().unwrap().as_ref();
-        break;
-    }
-
-    filename.to_owned()
+fn find_savefile() -> Result<String> {
+    let file = glob::glob("**/*.autosave")?
+        .next()
+        .context("there is no matched file")??;
+    let name = file.to_str().context("invalid filename")?;
+    Ok(name.into())
 }
 
 fn basic_edit(game_map: &mut GameObj) -> &GameObj {
@@ -77,10 +73,10 @@ mod tests {
 
     #[test]
     fn test_decrypt() {
-        let game_map = decrypt_save("WATCHER.autosave").unwrap();
+        let game_map = decrypt_save("IRONCLAD.autosave").unwrap();
 
-        assert_eq!(game_map.cards[0].id, "Defend_P");
-        assert_eq!(game_map.relics[1], "Membership Card");
+        assert_eq!(game_map.cards[0].id, "Strike_R");
+        assert_eq!(game_map.relics.len(), 5);
     }
 
     #[test]
