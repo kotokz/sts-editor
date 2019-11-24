@@ -27,7 +27,7 @@ fn main() -> Result<()> {
     println!("Parsing {} to {}", source_name, target_name);
     let mut game_map = decrypt_save(source_name)?;
 
-    encrypt_save(target_name, basic_edit(&mut game_map)).unwrap();
+    encrypt_save(target_name, basic_edit(&mut game_map))?;
     Ok(())
 }
 
