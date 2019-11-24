@@ -12,7 +12,7 @@ fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     let name: String;
     let source_name: &str = if args.len() < 2 {
-        name = find_savefile().clone();
+        name = find_savefile();
         name.as_ref()
     } else {
         &args[1]
@@ -33,10 +33,11 @@ fn main() -> Result<()> {
 
 fn find_savefile() -> String {
     let mut filename: &str = "";
-    let mut path: std::path::PathBuf;
+    let path: std::path::PathBuf;
     for entry in glob::glob("**/*.autosave").expect("Failed to read glob pattern") {
         path = entry.unwrap();
         filename = path.to_str().unwrap().as_ref();
+        break;
     }
 
     filename.to_owned()
