@@ -4,15 +4,24 @@ mod xor;
 use anyhow::Result;
 use game_type::GameObj;
 use std::fs;
+use std::str;
 use xor::Xor;
 
 pub fn basic_edit(game_map: &mut GameObj) -> &GameObj {
-    game_map.red += 1;
-    game_map.relics.push("Membership Card".to_string());
+    if game_map.red < 5 {
+        game_map.red += 1;
+    }
+    let memship = "Membership Card".to_string();
+    if !game_map.relics.contains(&memship) {
+        game_map.relics.push(memship);
+    }
     game_map.gold += 1000;
     for card in game_map.cards.iter_mut() {
         card.upgrades = 1;
     }
+    game_map
+        .cards
+        .retain(|card| !card.id.contains("Curse") && !card.id.contains("Shame"));
     game_map
 }
 

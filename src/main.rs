@@ -23,6 +23,8 @@ fn main() -> Result<()> {
     println!("Parsing {} to {}", source_name, target_name);
     let mut game_map = decrypt_save(source_name)?;
 
+    println!("Cards: {:?} ", game_map.cards);
+
     encrypt_save(target_name, basic_edit(&mut game_map))?;
     Ok(())
 }
@@ -31,6 +33,5 @@ fn find_savefile() -> Result<String> {
     let file = glob::glob("**/*.autosave")?
         .next()
         .context("there is no matched file")??;
-    let name = file.to_str().context("invalid filename")?;
-    Ok(name.into())
+    Ok(file.to_string_lossy().to_string())
 }

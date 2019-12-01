@@ -158,14 +158,14 @@ struct MetricDamageTaken {
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 struct MetricEventChoice {
     cards_upgraded: Option<Vec<String>>,
-    damage_healed: i64,
-    damage_taken: i64,
+    damage_healed: f64,
+    damage_taken: f64,
     event_name: String,
-    floor: i64,
-    gold_gain: i64,
-    gold_loss: i64,
-    max_hp_gain: i64,
-    max_hp_loss: i64,
+    floor: f64,
+    gold_gain: f64,
+    gold_loss: f64,
+    max_hp_gain: f64,
+    max_hp_loss: f64,
     player_choice: String,
     #[serde(default)]
     cards_removed: Vec<String>,
@@ -177,12 +177,12 @@ struct MetricEventChoice {
 
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 struct MetricPotionsObtained {
-    floor: i64,
+    floor: f64,
     key: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 struct MetricRelicsObtained {
-    floor: i64,
+    floor: f64,
     key: String,
 }
